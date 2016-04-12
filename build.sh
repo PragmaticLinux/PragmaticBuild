@@ -3,14 +3,20 @@
 
 set -e -u
 
-iso_name=pragmaticlinux
-iso_label="PragmaticLinux_$(date +%Y%m)"
+DISTRO=PragmaticLinux
+TYPE=FULL
+BACKUP_DIR="/backup"
+VERSION="v0.6"
+COMPRESSION_FORMAT=".tar.gz"
+
+arch=$(uname -m)
+iso_name=$DISTRO-$VERSION-${arch}
+iso_label="$DISTRO-$VERSION-${arch}"
 iso_version=$(date +%Y.%m.%d)
 install_dir=arch
-arch=$(uname -m)
 work_dir=work
 out_dir=output
-script_path=$(readlink -f ${0%/*})
+
 
 # run make_* function everytime the compiler exectue.
 run_once() {
@@ -29,7 +35,7 @@ make_setup_mkinitcpio() {
     mkdir -p ${work_dir}/airootfs/etc/initcpio/install
     cp /usr/lib/initcpio/hooks/archiso ${work_dir}/airootfs/etc/initcpio/hooks
     cp /usr/lib/initcpio/install/archiso ${work_dir}/airootfs/etc/initcpio/install
-    cp ${script_path}/mkinitcpio.conf ${work_dir}/airootfs/etc/mkinitcpio-archiso.conf
+    cp ./mkinitcpio.conf ${work_dir}/airootfs/etc/mkinitcpio-archiso.conf
     mkarchiso -v -w "${work_dir}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux -g /boot/archiso.img' run
 }
 
@@ -45,7 +51,7 @@ make_syslinux() {
     mkdir -p ${work_dir}/iso/${install_dir}/boot/syslinux
     sed "s|%ARCHISO_LABEL%|${iso_label}|g;
          s|%INSTALL_DIR%|${install_dir}|g;
-         s|%ARCH%|${arch}|g" ${script_path}/syslinux/syslinux.cfg > ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
+         s|%ARCH%|${arch}|g" ./syslinux/syslinux.cfg > ${work_dir}/iso/${install_dir}/boot/syslinux/syslinux.cfg
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/${install_dir}/boot/syslinux/
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/menu.c32 ${work_dir}/iso/${install_dir}/boot/syslinux/
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/libutil.c32 ${work_dir}/iso/${install_dir}/boot/syslinux/
@@ -55,7 +61,7 @@ make_syslinux() {
 # Prepare /isolinux
 make_isolinux() {
     mkdir -p ${work_dir}/iso/isolinux
-    sed "s|%INSTALL_DIR%|${install_dir}|g" ${script_path}/isolinux/isolinux.cfg > ${work_dir}/iso/isolinux/isolinux.cfg
+    sed "s|%INSTALL_DIR%|${install_dir}|g" ./isolinux/isolinux.cfg > ${work_dir}/iso/isolinux/isolinux.cfg
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/isolinux.bin ${work_dir}/iso/isolinux/
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/isohdpfx.bin ${work_dir}/iso/isolinux/
     cp ${work_dir}/airootfs/usr/lib/syslinux/bios/ldlinux.c32 ${work_dir}/iso/isolinux/
@@ -68,14 +74,18 @@ make_prepare() {
 
 # Build ISO
 make_iso() {
-    mkarchiso -v -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-${arch}.iso"
+    mkarchiso -v -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "/srv/http" iso "$iso_label.iso"
 }
 
-run_once make_basefs
-run_once make_setup_mkinitcpio
-run_once make_boot
-run_once make_syslinux
+#run_once make_basefs
+#run_once make_setup_mkinitcpio
+#run_once make_boot
+
+#Rebuild Bootloader
+run_once make_syslinux	
 run_once make_isolinux
-run_once make_prepare
-#rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/installer/*","/installer"} /* /installer/InstallPragmatic/work/airootfs/
+
+#run_once make_prepare
+
+#Rebuild Bootloader
 run_once make_iso

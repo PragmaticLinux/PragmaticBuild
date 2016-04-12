@@ -22,8 +22,7 @@ echo 'Verson Detail: $VERSION $TYPE'
 echo 'Compression Format Type: $COMPRESSION_FORMAT'
 
 read -p "Are you sure you want to continue with those specific ?" -n 1 -r
-if[[ $REPLY =~^[Yy]$ ]]
-then
+if[[ $REPLY =~^[Yy]$ ]] then
 
 echo "Preparing the environment for the compile"
 #echo -en "[####################################################################################################] 1%\r"
@@ -38,10 +37,10 @@ find "/mnt/var/cache/pacman/pkg" -maxdepth 1 -type f -delete
 find "/mnt/var/log" -maxdepth 1 -type f -delete
 
 echo -en "[#####                                                                                               ] 5%\r"
-rsync -aXXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/*","/root/PragmaticBuild/*","/var/log/httpd/*","/var/cache/pacman/pkg/*"} /* $BACKUP_DIR/
+rsync -aXXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/*","/root/PragmaticBuild/*","/var/log/httpd/*","/var/cache/pacman/pkg/*","/root/.bash_histroy","/root/.mysql_histroy"} /* $BACKUP_DIR/
 
 echo -en "[###########################################################################                         ] 65%\r"
-tar --xattrs -czpvf /root/PragmaticBuild/$DISTRO-$TYPE-$VERSION-$COMPRESSION_FORMAT /root/PragmaticBuild
+tar --xattrs -czpf /root/PragmaticBuild/$DISTRO-$TYPE-$VERSION-$COMPRESSION_FORMAT $BACKUP_DIR/*
 
 echo -en "[####################################################################################################] 100%\r"
 
