@@ -13,34 +13,44 @@ echo "                 |___/                                                    
 
 DISTRO=PragmaticLinuxDeveloper
 TYPE=FULL
-BACKUP_DIR="/backup"
+BACKUP_DIR="/root/pragmaticbuild/backup"
 VERSION="v0.6"
 COMPRESSION_FORMAT=".tar.gz"
-
-echo 'Distro: $DISTRO'
-echo 'Verson Detail: $VERSION $TYPE'
-echo 'Compression Format Type: $COMPRESSION_FORMAT'
+CURRENT_SCRIPT_DIR=$(pwd)
+echo "Current Directory script: "$CURRENT_SCRIPT_DIR
+echo 'Distro: '$DISTRO
+echo 'Verson Detail: '$VERSION' '$TYPE
+echo 'Compression Format Type: '$COMPRESSION_FORMAT
 
 read -p "Are you sure you want to continue with those specific ?" -n 1 -r
 if[[ $REPLY =~^[Yy]$ ]] then
 
+echo "Removing old backup"
+rm -R ./backup/*
+
+
 echo "Preparing the environment for the compile"
-#echo -en "[####################################################################################################] 1%\r"
 echo -en "[#                                                                                                   ] 1%\r"
 rm -Rf $BACKUP_DIR
 mkdir $BACKUP_DIR
 echo -en "[##                                                                                                  ] 2%\r"
 
-find "/mnt/var/lib/pacman" -maxdepth 1 -type f -delete
-find "/mnt/var/lib/pacman/sync" -maxdepth 1 -type f -delete
-find "/mnt/var/cache/pacman/pkg" -maxdepth 1 -type f -delete
-find "/mnt/var/log" -maxdepth 1 -type f -delete
+rm -R "/var/lib/pacman/local/*"
+rm -R "/var/lib/pacman/sync/*"
+rm -R "/var/cache/pacman/pkg/*"
+rm -R "/var/log/*"
+rm -R "/var/log/httpd/*"
+rm -R "/var/log/Xorg.*"
+rm -R "/var/log/VBox*"
+rm -R "/var/log/pacman.log"
+
 
 echo -en "[#####                                                                                               ] 5%\r"
-rsync -aXXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/*","/root/PragmaticBuild/*","/var/log/httpd/*","/var/cache/pacman/pkg/*","/root/.bash_histroy","/root/.mysql_histroy"} /* $BACKUP_DIR/
+rsync -aXX --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/","/root/pragmaticbuild/","/var/log/httpd/*","/var/cache/pacman/pkg/*","/root/.bash_histroy","/root/.mysql_histroy","/root/tools/","/root/ToolsBack/"} /* $BACKUP_DIR
 
 echo -en "[###########################################################################                         ] 65%\r"
-tar --xattrs -czpf /root/PragmaticBuild/$DISTRO-$TYPE-$VERSION-$COMPRESSION_FORMAT $BACKUP_DIR/*
+cd ./backup
+tar -zcvpf $CURRENT_SCRIPT_DIR"/"$DISTRO-$TYPE-$VERSION$COMPRESSION_FORMAT .
 
 echo -en "[####################################################################################################] 100%\r"
 

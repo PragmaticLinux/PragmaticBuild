@@ -5,7 +5,7 @@ set -e -u
 
 DISTRO=PragmaticLinux
 TYPE=FULL
-BACKUP_DIR="/backup"
+BACKUP_DIR="/root/pragmaticbuild/backup"
 VERSION="v0.6"
 COMPRESSION_FORMAT=".tar.gz"
 
@@ -85,7 +85,7 @@ make_iso() {
 run_once make_syslinux	
 run_once make_isolinux
 
-#run_once make_prepare
+run_once make_prepare
 
 #Rebuild Bootloader
 run_once make_iso
