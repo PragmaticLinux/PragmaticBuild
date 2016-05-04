@@ -1,6 +1,16 @@
 #!/bin/bash
-#Author: Alban Mulaki
-#@2016
+# Title		: pragmatic-dev.sh
+# Description	: Install Frameworks for web devepolment platform
+# Author	: Alban Mulaki <amulaki@pragmaticlinux.org> or <alban.mulaki@gmail.com>
+# Date		: 14 April 2016
+# Usage		: sh pragmatic-dev.sh or pragmatic-dev
+# Copyright	: Alban Mulaki & PragmaticLinux
+# Website	: www.pragmaticlinux.org
+# Author Website: www.pragmaticlinux.org/AlbanMulaki
+#
+# @pragmaticLinux
+#========================================================================================
+
 
 echo " _____                                 _   _        _      _                  "
 echo "|  __ \                               | | (_)      | |    (_)                 "
