@@ -51,13 +51,12 @@ install_pragmaticLinux(){
 
 configure_system(){
 	chroot ./ /bin/bash -c "mkinitcpio -p linux"
-	chroot ./ /bin/bash -c "rm /etc/fstab"
-	chroot ./ /bin/bash -c "genfstab -U -p / >> /etc/fstab"
+
 }
 
 setup_bootloader(){
 	chroot ./ /bin/bash -c "grub-install /dev/$DEVICE_ADDRESS"
-	chroot ./ /bin/bash -c "grub-mkconfig -o /boot/grub/grub"	
+	chroot ./ /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"	
 }
 
 configure_users(){
@@ -75,6 +74,9 @@ chroot_system(){
 	mount --rbind /dev dev/
 	mount --rbind /run run/
 	chroot ./ /bin/bash -c "swapon $SWAP_PARTITION"
+	chroot ./ /bin/bash -c "rm /etc/fstab"
+	chroot ./ /bin/bash -c "genfstab -U -p / >> /etc/fstab"
+
 }
 
 filesystem_setup(){
