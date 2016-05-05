@@ -3,6 +3,44 @@
 ***
 Pragmatic Linux Build is used to compile,build the pragmaticlinux distro and make it ready for production use.
 
+
+# Usage
+
+***
+**prepare.sh**
+Used to prepare the data, backup current configuration system and compress it to one file compression.
+
+**praginstall.sh**
+Its used to install Pragmatic Linux on Guest Machine.
+
+**build.sh**
+It will build the system,compile,configure,implement feature.  
+
+
+# Workflow step-by-step usability
+
+***
+Builiding the pragmatic linux distro.
+
+**Requirments**
+
+- Root Privileges over the system
+- To be located at /root/
+- ArchLinux Base System
+
+Go as root user
+> su root 
+
+> cd /root
+
+> git clone https://github.com/PragmaticLinux/PragmaticBuild.git pragmaticbuild
+
+...............
+
+
+
+
+
 ## License & Agrements
 ***
 
@@ -28,19 +66,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-# Usage
-
-***
-### prepare.sh 
-Used to prepare the data, backup current configuration system and compress it to one file compression.
-### praginstall.sh
-Its used to install Pragmatic Linux on Guest Machine 
-### build.sh
-It will build the system,compile,configure,implement feature.  
-
-
-# Workflow step-by-step usability
-
-***
-
