@@ -47,6 +47,7 @@ install_pragmaticLinux(){
 	echo -ne "{ $PROGRESS_COLOR ###############################################-- $RESET_STYLE} (\e[36m96%$RESET_STYLE)\n"
 	echo -ne "{ $PROGRESS_COLOR ################################################# $RESET_STYLE} (\e[36m100%$RESET_STYLE)\n"
 	echo "Installation completed system is going to reboot"
+	reboot
 }
 
 configure_system(){
@@ -64,7 +65,7 @@ configure_users(){
 	chroot ./ /bin/bash -c "passwd"
 	printf "Create your username:"; read username
 	chroot ./ /bin/bash -c "useradd -m -g users -G wheel,storage,power -s /bin/bash  $username"
-	chroot ./ /bin/bash -c "passwd"
+	chroot ./ /bin/bash -c "passwd $username"
 	
 }
 
@@ -75,8 +76,7 @@ chroot_system(){
 	mount --rbind /run run/
 	chroot ./ /bin/bash -c "swapon $SWAP_PARTITION"
 	chroot ./ /bin/bash -c "rm /etc/fstab"
-	chroot ./ /bin/bash -c "genfstab -U -p /mnt | grep "swap\|ext4"  >> /etc/fstab"
-
+	chroot ./ /bin/bash -c "genfstab -U -p / | grep \"swap\|ext4\"  >> /etc/fstab"
 }
 
 filesystem_setup(){
