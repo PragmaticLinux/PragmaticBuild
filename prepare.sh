@@ -59,6 +59,8 @@ rsync -aXX --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/m
 
 echo -en "[###########################################################################                         ] 65%\r"
 cd ./backup
+rm -R root/.*
+cp -R etc/skel root/
 tar -zcvpf $CURRENT_SCRIPT_DIR"/"$DISTRO-$TYPE-$VERSION$COMPRESSION_FORMAT .
 
 echo -en "[####################################################################################################] 100%\r"
