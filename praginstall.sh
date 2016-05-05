@@ -75,7 +75,7 @@ chroot_system(){
 	mount --rbind /run run/
 	chroot ./ /bin/bash -c "swapon $SWAP_PARTITION"
 	chroot ./ /bin/bash -c "rm /etc/fstab"
-	chroot ./ /bin/bash -c "genfstab -U -p / >> /etc/fstab"
+	chroot ./ /bin/bash -c "genfstab -U -p /mnt | grep "swap\|ext4"  >> /etc/fstab"
 
 }
 
