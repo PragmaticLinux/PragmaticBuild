@@ -39,6 +39,7 @@ install_pragmaticLinux(){
 	rm $PRAGMATIC_SYSTEM_MOUNT/etc/fstab
 	echo -ne "{ $PROGRESS_COLOR ######################################----------- $RESET_STYLE} (\e[36m76%$RESET_STYLE)\n"
 	chroot_system
+	configure_system
 	echo -ne "{ $PROGRESS_COLOR #########################################-------- $RESET_STYLE} (\e[36m82%$RESET_STYLE)\n"
 	configure_users
 	echo -ne "{ $PROGRESS_COLOR #############################################---- $RESET_STYLE} (\e[36m90%$RESET_STYLE)\n"
@@ -50,12 +51,13 @@ install_pragmaticLinux(){
 
 configure_system(){
 	chroot ./ /bin/bash -c "mkinitcpio -p linux"
+	chroot ./ /bin/bash -c "rm /etc/fstab"
+	chroot ./ /bin/bash -c "genfstab -U -p / >> /etc/fstab"
 }
 
 setup_bootloader(){
 	chroot ./ /bin/bash -c "grub-install /dev/$DEVICE_ADDRESS"
-	chroot ./ /bin/bash -c "grub-mkconfig -o /boot/grub/grub"
-	
+	chroot ./ /bin/bash -c "grub-mkconfig -o /boot/grub/grub"	
 }
 
 configure_users(){
@@ -73,9 +75,6 @@ chroot_system(){
 	mount --rbind /dev dev/
 	mount --rbind /run run/
 	chroot ./ /bin/bash -c "swapon $SWAP_PARTITION"
-	chroot ./ /bin/bash -c "rm /etc/fstab"
-	chroot ./ /bin/bash -c "genfstab -U -p / >> /etc/fstab"
-
 }
 
 filesystem_setup(){
