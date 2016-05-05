@@ -46,7 +46,7 @@ install_pragmaticLinux(){
 	setup_bootloader
 	echo -ne "{ $PROGRESS_COLOR ###############################################-- $RESET_STYLE} (\e[36m96%$RESET_STYLE)\n"
 	echo -ne "{ $PROGRESS_COLOR ################################################# $RESET_STYLE} (\e[36m100%$RESET_STYLE)\n"
-	echo "Installation completed system is going to reboot"
+	echo "$PROGRESS_COLOR Installation completed system is going to reboot"
 	reboot
 }
 
