@@ -27,6 +27,7 @@ Builiding the pragmatic linux distro.
 - Root Privileges over the system
 - To be located at /root/
 - ArchLinux Base System
+- mkarchiso, archiso package into archlinux repo
 
 Go as root user
 > su root 
@@ -35,8 +36,26 @@ Go as root user
 
 > git clone https://github.com/PragmaticLinux/PragmaticBuild.git pragmaticbuild
 
-...............
+> cd pragmaticbuild
 
+Now the After all this the environment its ready and its can be builded.
+
+Every change you do on the live system you are working you should follow just those 2 steps
+
+Execute those two script as follow
+> sh prepare.sh
+After executing completed copy the file PragmaticLinux*.tar.gz and move it to work/airootfs/
+
+now its time to execute the build.sh
+> sh build.sh
+
+this will build and compile everything inside of it. At the end it will output an .iso which can be used to boot from any machine. the output is generated at **/srv/http/** so write it to an USB or DVD and test it.
+
+the third step is optional and it has to do with praginstall.sh script
+when you are abel to boot on builded system sexecute
+> sh Pragmatic.sh
+
+And follow the guide of scripts if you need help on how to use installation then go ahead at documentation of www.pragmaticlinux.org in menu Documentation
 
 
 
@@ -66,3 +85,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+

@@ -13,6 +13,10 @@
 
 set -e -u
 
+cp praginstall.sh ./work/airootfs/root/Pragmatic.sh
+chmod -R 777 ./work/airootfs/root/Pragmatic.sh
+
+
 DISTRO=PragmaticLinux
 TYPE=FULL
 BACKUP_DIR="/root/pragmaticbuild/backup"

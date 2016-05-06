@@ -35,6 +35,7 @@ read -p "Are you sure you want to continue with those specific ?" -n 1 -r
 if[[ $REPLY =~^[Yy]$ ]] then
 
 echo "Removing old backup"
+[ ! -d ./backup ] && mkdir ./backup
 rm -R ./backup/*
 
 
@@ -52,16 +53,17 @@ rm -R "/var/log/httpd/*"
 rm -R "/var/log/Xorg.*"
 rm -R "/var/log/VBox*"
 rm -R "/var/log/pacman.log"
-
+rm -R "/srv/http/Pragmatic*"
+pacman -Sc
 
 echo -en "[#####                                                                                               ] 5%\r"
-rsync -aXX --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/","/root/pragmaticbuild/","/var/log/httpd/*","/var/cache/pacman/pkg/*","/root/.bash_histroy","/root/.mysql_histroy","/root/tools/","/root/ToolsBack/"} /* $BACKUP_DIR
-
+rsync -aXX --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found/*","/backup/","/root/*","/var/log/httpd/*","/var/cache/pacman/pkg/*"} /* $BACKUP_DIR
 echo -en "[###########################################################################                         ] 65%\r"
 cd ./backup
 rm -R root/.*
-cp -R etc/skel root/
-tar -zcvpf $CURRENT_SCRIPT_DIR"/"$DISTRO-$TYPE-$VERSION$COMPRESSION_FORMAT .
+cp -R etc/skel/. root/
+chmod 777 usr/bin/pragmatic-dev
+tar -zcpf $CURRENT_SCRIPT_DIR"/"$DISTRO-$TYPE-$VERSION$COMPRESSION_FORMAT .
 
 echo -en "[####################################################################################################] 100%\r"
 
